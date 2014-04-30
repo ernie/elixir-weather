@@ -5,11 +5,11 @@ defmodule Weather.NOAA do
   @user_agent [ "User-Agent": "Elixir ernie@erniemiller.org"]
 
   def fetch(abbr) do
-    case HTTPotion.get(noaa_url(abbr), @user_agent) do
-      Response[body: body, status_code: status, headers: _headers]
+    case HTTPotion.get(noaa_url(String.upcase(abbr)), @user_agent) do
+      %Response{body: body, status_code: status, headers: _headers}
       when status in 200..299 ->
         { :ok, body }
-      Response[body: body, status_code: _status, headers: _headers] ->
+      %Response{body: body, status_code: _status, headers: _headers} ->
         { :error, body }
     end
   end
@@ -19,4 +19,3 @@ defmodule Weather.NOAA do
   end
 
 end
-
